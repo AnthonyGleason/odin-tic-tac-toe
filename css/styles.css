@@ -1,6 +1,45 @@
+:root{
+    --header-sidebar-background: beige;
+    --body-background: rgba(155, 155, 155, 0.2);
+    --game-board-background: rgba(155, 155, 155, 0.2);
+    --font-color: black;
+    --game-board-border-color: black;
+    --square-background: rgb(255, 237, 221);
+}
+*{
+    margin: 0;
+    padding: 0;
+    color: var(--font-color);
+}
+.header{
+    background-color: var(--header-sidebar-background);
+    grid-area: header;
+}
+.sidebar{
+    grid-area: sidebar;
+    background-color: var(--header-sidebar-background);
+}
+
+.game-board{
+    grid-area: game-board;
+    background-color: var(--game-board-background);
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+}
+
+body{
+    height: 100vh;
+    width: 100vw;
+    background-color: var(--body-background);
+    display: grid;
+    grid-template-rows: 0.3fr 2fr ;
+    grid-template-columns: 1fr 7fr;
+    grid-template-areas:
+    "header header"
+    "sidebar game-board"
+}
 .game-board-item{
-    height: 100px;
-    width: 100px;
-    border-style: solid;
-    border-color: red;
+    border-style:ridge;
+    border-color: var(--game-board-border-color);
+    background-color: var(--square-background);
 }

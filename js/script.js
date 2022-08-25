@@ -10,6 +10,9 @@ const game = (function () {
                 console.log("player two has won the game!");
             };
         },
+        displayPiece: function (location){
+            boardElementArray[location].boardItem.textContent=currentPiece;
+        }
     };
 
     const gameControls = {
@@ -131,15 +134,25 @@ const game = (function () {
             counter=indexBoardElement(e, counter)
         });
     };
-
+    const isSpace = function (object) {
+        if (object.boardItem.textContent != ""){
+            return false;
+        }
+        return true;
+    };
     const setEventListeners = function (){
         boardElementArray.forEach(e => {
             e.boardItem.addEventListener('click', ()=>{
-                if (gameControls.checkWinner()==null){
+                //make if below statement so if there is already a piece you cannot place anything
+                if (isSpace(e)){
                     gameControls.playTurn(whoseTurn(), e.index);
+                    display.displayPiece(e.index);
                     gameControls.endTurn(whoseTurn());
-                } else if (gameControls.checkWinner()!=null){
-                    display.announceWinner();
+                    if (gameControls.checkWinner()!=null){
+                        display.announceWinner();
+                    }  
+                } else{
+                    console.log("This space is already taken");
                 }
             })
         });
