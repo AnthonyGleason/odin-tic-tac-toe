@@ -1,6 +1,7 @@
 const game = (function () {
     let gameBoard = [];
-
+    let boardElementArray = [];
+    const gameBoardContainer = document.querySelector('.game-board');
     const display = {
         announceWinner: function (){
             if (gameControls.checkWinner()==1){
@@ -53,18 +54,11 @@ const game = (function () {
             players.playerOne = players.createPlayer('X',true,false);
             players.playerTwo = players.createPlayer('O',false,false);
             //Start game
-
-            /*maybe put this under an event listener for a click on grid div,, change getPlayerSelection() to e in event listener
-            take out loop and put if statement isnt null then announce winner*/
-            while (gameControls.checkWinner()==null){
-                gameControls.playTurn(whoseTurn(), getPlayerSelection());
-                gameControls.endTurn(whoseTurn());
-                console.log(gameBoard);
-            };
-            //If that loop is terminated there has to be a winner therefore we can call the announceWinner() function here
-            display.announceWinner();
+            createBoardDivsIndex(gameBoardContainer);
+            setEventListeners();
         },
         playTurn: function (playerTurn, playerSelection) {
+            //Bug console.logs wrong player
             console.log("Go player "+playerTurn);
             currentPiece = setPlayerPiece(playerTurn);
             gameBoard[playerSelection]=currentPiece;
@@ -85,7 +79,7 @@ const game = (function () {
 
     let currentPiece = null;
 
-    const getPlayerSelection = function (){
+    const getPlayerSelection = function (e){
         return parseInt(prompt("choose a spot 0-8"));
     };
 
@@ -126,7 +120,30 @@ const game = (function () {
             console.log("error");
         }
     };
+    const indexBoardElement = function(boardItem, counter){
+        boardElementArray.push({boardItem,index: counter});
+        return counter+=1;
+    }
+    const createBoardDivsIndex= function (gameBoardContainer){
+        boardArray=gameBoardContainer.querySelectorAll('.game-board-item');
+        let counter=0;
+        boardArray.forEach(e => {
+            counter=indexBoardElement(e, counter)
+        });
+    };
 
+    const setEventListeners = function (){
+        boardElementArray.forEach(e => {
+            e.boardItem.addEventListener('click', ()=>{
+                if (gameControls.checkWinner()==null){
+                    gameControls.playTurn(whoseTurn(), e.index);
+                    gameControls.endTurn(whoseTurn());
+                } else if (gameControls.checkWinner()!=null){
+                    display.announceWinner();
+                }
+            })
+        });
+    };
     const whoseTurn= function (){
         if (players.playerOne.isTurn == true){
             return 1;
@@ -147,5 +164,4 @@ const game = (function () {
 
     return {gameControls};
 })();
-//Uncomment to start automatically
-//game.gameControls.gameStart();
+game.gameControls.gameStart();
