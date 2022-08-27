@@ -11,6 +11,8 @@ const game = (function () {
                 display.displayText("Player One has won the game!");
             } else if (gameControls.checkWinner()==2){
                 display.displayText("Player Two has won the game!");
+            } else if (gameControls.checkWinner()==3){
+                display.displayText("Tie! Start a new game to play again.")
             };
         },
         announceTurn: function (turn){
@@ -63,6 +65,11 @@ const game = (function () {
                 //upper right to bottom left
                 return getWinner(2);
             }
+            if (gameBoard.every(e=>{
+                return e!=null;
+            })){
+                return 3;
+            };
             return winner;
         },
         gameStart: function () {
@@ -81,7 +88,6 @@ const game = (function () {
             currentPiece = setPlayerPiece(playerTurn);
             gameBoard[playerSelection]=currentPiece;
             display.announceTurn(whoseTurn());
-            setEventListeners();
         },
         newGameStart: function (){
             //Clear game board
