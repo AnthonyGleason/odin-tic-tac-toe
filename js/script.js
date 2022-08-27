@@ -1,18 +1,33 @@
+//Still needs new game function with a button to start a new game
+
 const game = (function () {
     let gameBoard = [];
     let boardElementArray = [];
     const gameBoardContainer = document.querySelector('.game-board');
+    
     const display = {
         announceWinner: function (){
             if (gameControls.checkWinner()==1){
-                console.log("player one has won the game!");
+                display.displayText("Player One has won the game!");
             } else if (gameControls.checkWinner()==2){
-                console.log("player two has won the game!");
+                display.displayText("Player Two has won the game!");
             };
+        },
+        announceTurn: function (turn){
+            if (turn==1){
+                turn="One";
+            } else if (turn == 2){
+                turn="Two";
+            }
+            display.displayText("Player "+turn+"'s turn.");
         },
         displayPiece: function (location){
             boardElementArray[location].boardItem.textContent=currentPiece;
-        }
+        },
+        displayText: function (text){
+            display.turnDiv.textContent = text;
+        },
+        turnDiv: document.querySelector('.turn-display-text')
     };
 
     const gameControls = {
@@ -58,15 +73,26 @@ const game = (function () {
             players.playerTwo = players.createPlayer('O',false,false);
             //Start game
             createBoardDivsIndex(gameBoardContainer);
+            //Initializes display with go player 1
+            display.announceTurn(whoseTurn());
             setEventListeners();
         },
         playTurn: function (playerTurn, playerSelection) {
-            //Bug console.logs wrong player
-            console.log("Go player "+playerTurn);
             currentPiece = setPlayerPiece(playerTurn);
             gameBoard[playerSelection]=currentPiece;
+            display.announceTurn(whoseTurn());
+            setEventListeners();
         },
-
+        newGameStart: function (){
+            //Clear game board
+            gameBoard = [null,null,null, null, null, null, null, null, null];
+            clearGameBoard();
+            //Set player one and player two
+            players.playerOne = players.createPlayer('X',true,false);
+            players.playerTwo = players.createPlayer('O',false,false);
+            display.announceTurn(whoseTurn());
+            
+        },
         endTurn: function(playerTurn){
             if (playerTurn==1){
                 players.playerOne.isTurn=false;
@@ -77,6 +103,8 @@ const game = (function () {
             } else{
                 console.log("error");
             }
+            //Displays whose turn it is
+            display.announceTurn(whoseTurn());
         }
     };
 
@@ -105,7 +133,11 @@ const game = (function () {
             return false;
         }
     };
-
+    const clearGameBoard = function (){
+        boardElementArray.forEach(e =>{
+            e.boardItem.textContent="";
+        });
+    };
     const getPiece = function(location){
         if (gameBoard[location]=="X"){
             return "X";
@@ -143,7 +175,6 @@ const game = (function () {
     const setEventListeners = function (){
         boardElementArray.forEach(e => {
             e.boardItem.addEventListener('click', ()=>{
-                //make if below statement so if there is already a piece you cannot place anything
                 if (isSpace(e)){
                     gameControls.playTurn(whoseTurn(), e.index);
                     display.displayPiece(e.index);

@@ -11,14 +11,17 @@
                 <div class="header-text">Tic Tac Toe</div>
                 <!--Displays whose turn it is-->
                 <div class="turn-display-text">placeholder</div>
+                <button class="new-game-button" onclick="game.gameControls.newGameStart()">New Game</button>
             </div>
             <!--Sidebar shows rules-->
             <div class="sidebar">
                 <ul class="sidebar-list">
                     <li id="sidebar-list-title" class="sidebar-list-item">Rules</li>
-                    <li class="sidebar-list-item">placeholder</li>
-                    <li class="sidebar-list-item">placeholder</li>
-                    <li class="sidebar-list-item">placeholder</li>
+                    <li class="sidebar-list-item">The game is played on a grid that's 3 squares by 3 squares.</li>
+                    <li class="sidebar-list-item">You are X, your friend (or the computer in this case) is O. Players take turns putting their marks in empty squares.</li>
+                    <li class="sidebar-list-item">The first player to get 3 of her marks in a row (up, down, across, or diagonally) is the winner.</li>
+                    <li class="sidebar-list-item">When all 9 squares are full, the game is over. If no player has 3 marks in a row, the game ends in a tie.</li>
+                    <li class="sidebar-list-item" id="credits"><a href="https://www.exploratorium.edu/brain_explorer/tictactoe.html">Rules Credits to www.exploratiorium.edu</a></li>
                 </ul>
             </div>
             <!--Gameboard display-->
